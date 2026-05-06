@@ -1,0 +1,10 @@
+Este archivo llamarlo eje01.cpp
+y para crear el ejecutable se debe usar la siguiente estructura:
+g++ [nombre del archivo] [nombre de archivo generado executable] -I[Ruta de la carpeta
+include de allegro] -L[Ruta de la carpeta lib de allegro] [todas las librerias de allegro que usan
+tusfuentes]
+Por ejemplo:
+g++ eje01.cpp -o eje01.exe -I"D:\Programas\allegro 5.2.11\allegro\include" -
+L"D:\Programas\allegro 5.2.11\allegro\lib" -lallegro -lallegro_main -lallegro_primitives
+Ejecución:
+eje01.exe

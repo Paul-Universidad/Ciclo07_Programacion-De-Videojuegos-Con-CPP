@@ -67,7 +67,7 @@ int main(){
     al_flip_display();
     
     // Mantener la ventana abierta por 15 segundos
-    al_rest(15.0);
+    al_rest(100.0);
     
     // Limpiar recursos
     al_destroy_display(display);
