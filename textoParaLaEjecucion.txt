@@ -8,3 +8,12 @@ g++ eje01.cpp -o eje01.exe -I"D:\Programas\allegro 5.2.11\allegro\include" -
 L"D:\Programas\allegro 5.2.11\allegro\lib" -lallegro -lallegro_main -lallegro_primitives
 Ejecución:
 eje01.exe
+
+
+ g++ main.cpp Cuadro.cpp -o main.exe -I"C:\Users\paulc\Desktop\PDVCPP\allegro-x86_64-w64-mingw32-gcc-15.2.0-posix-seh-dynamic-5.2.11.3\allegro\include" -L"C:\Users\paulc\Desktop\PDVCPP\allegro-x86_64-w64-mingw32-gcc-15.2.0-posix-seh-dynamic-5.2.11.3\allegro\lib" -lallegro -lallegro_main -lallegro_primitives
+
+Ruta del include
+C:\Users\paulc\Desktop\PDVCPP\allegro-x86_64-w64-mingw32-gcc-15.2.0-posix-seh-dynamic-5.2.11.3\allegro\include
+
+Ruta del lib 
+ C:\Users\paulc\Desktop\PDVCPP\allegro-x86_64-w64-mingw32-gcc-15.2.0-posix-seh-dynamic-5.2.11.3\allegro\lib
