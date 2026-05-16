@@ -1,0 +1,1 @@
+g++ main.cpp ContadorGame.cpp -o main.exe -I"D:\Programas\allegro 5.2.11\allegro\include" -L"D:\Programas\allegro 5.2.11\allegro\lib" -lallegro -lallegro_main -lallegro_primitives -lallegro_ttf -lallegro_font 

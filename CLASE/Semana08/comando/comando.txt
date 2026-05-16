@@ -1,0 +1,4 @@
+g++ main.cpp ReboteGame.cpp Pelota.cpp -o main.exe -I"D:\Programas\allegro 5.2.11\allegro\include" -L"D:\Programas\allegro 5.2.11\allegro\lib" -lallegro -lallegro_main -lallegro_primitives -lallegro_ttf -lallegro_font
+
+
+g++ main.cpp ReboteGame.cpp Pelota.cpp -o main.exe -I"C:\Users\paulc\Ciclo07_Programacion-De-Videojuegos-Con-CPP\allegro\include" -L"C:\Users\paulc\Ciclo07_Programacion-De-Videojuegos-Con-CPP\allegro\lib" -lallegro -lallegro_main -lallegro_primitives -lallegro_ttf -lallegro_font
