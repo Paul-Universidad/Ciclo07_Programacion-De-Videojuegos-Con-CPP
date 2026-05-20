@@ -6,9 +6,13 @@
 ReboteGame::ReboteGame() : ventana(nullptr)
                              , cola_eventos(nullptr)
                              , fuente(nullptr)
-                             , pelota(nullptr)
+                             , cuadrado(nullptr)
                              , contador(0)
-                             , running(true) {}
+                             , running(true)
+                             , addon_font_activo_(false)
+                             , addon_ttf_activo_(false)
+                             , addon_primitives_activo_(false)
+                             , teclado_instalado_(false) {}
 
 bool ReboteGame::inicializar() {
     if (!al_init()) {
@@ -19,15 +23,18 @@ bool ReboteGame::inicializar() {
         printf("Error: No se pudo inicializar font addon\n");
         return false;
     }
+    addon_font_activo_ = true;
     if (!al_init_ttf_addon()) {
         printf("Error: No se pudo inicializar ttf addon\n");
         return false;
     }
+    addon_ttf_activo_ = true;
     if (!al_init_primitives_addon()) {
         printf("Error: No se pudo inicializar primitives addon\n");
         return false;
     }
-    al_install_keyboard();
+    addon_primitives_activo_ = true;
+    teclado_instalado_ = al_install_keyboard();
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
     ventana = al_create_display(800, 600);
@@ -48,7 +55,7 @@ bool ReboteGame::inicializar() {
     al_register_event_source(cola_eventos, al_get_keyboard_event_source());
     al_register_event_source(cola_eventos, al_get_display_event_source(ventana));
     
-    pelota = new Pelota();
+    cuadrado = new Cuadrado();
     
     printf("Inicialización exitosa!\n");  // ← Mensaje de éxito
     return (cola_eventos != nullptr);
@@ -79,26 +86,31 @@ void ReboteGame::procesarEntrada() {
     if (al_key_down(&teclas, ALLEGRO_KEY_DOWN)) {
         flecha_dy += 1;
     }
-    pelota->fijarDireccionDesdeFlechas(flecha_dx, flecha_dy);
+    cuadrado->fijarDireccionDesdeFlechas(flecha_dx, flecha_dy);
     if (al_key_down(&teclas, ALLEGRO_KEY_LSHIFT) || al_key_down(&teclas, ALLEGRO_KEY_RSHIFT)) {
-        pelota->acelerar();
+        cuadrado->acelerar();
     }
     if (al_key_down(&teclas, ALLEGRO_KEY_Z)) {
-        pelota->desacelerar();
+        cuadrado->desacelerar();
     }
 }
 
 void ReboteGame::actualizar() {
-    pelota->mover();
-    pelota->rebote();
+    cuadrado->mover();
+    cuadrado->rebote();
 }
 
 void ReboteGame::dibujar() {
     al_clear_to_color(al_map_rgb(20, 20, 20)); // Un gris oscuro
-    al_draw_filled_circle( pelota->getX()
-                         , pelota->getY()
-                         , pelota->getRadio()
-                         , pelota->getColor() );
+    const double cx = cuadrado->getX();
+    const double cy = cuadrado->getY();
+    const double mitad = cuadrado->getLado() / 2.0;
+    al_draw_filled_rectangle(
+        static_cast<float>(cx - mitad),
+        static_cast<float>(cy - mitad),
+        static_cast<float>(cx + mitad),
+        static_cast<float>(cy + mitad),
+        cuadrado->getColor());
     al_flip_display();
 }
 
@@ -112,8 +124,37 @@ void ReboteGame::ejecutar() {
 }
 
 ReboteGame::~ReboteGame() {
-    delete pelota;
-    if (fuente) al_destroy_font(fuente);
-    if (cola_eventos) al_destroy_event_queue(cola_eventos);
-    if (ventana) al_destroy_display(ventana);
+    delete cuadrado;
+    cuadrado = nullptr;
+
+    if (fuente) {
+        al_destroy_font(fuente);
+        fuente = nullptr;
+    }
+    if (cola_eventos) {
+        al_destroy_event_queue(cola_eventos);
+        cola_eventos = nullptr;
+    }
+    if (ventana) {
+        al_destroy_display(ventana);
+        ventana = nullptr;
+    }
+
+    // Mismo orden inverso a lo habitual al salir del programa en Allegro
+    if (teclado_instalado_) {
+        al_uninstall_keyboard();
+        teclado_instalado_ = false;
+    }
+    if (addon_primitives_activo_) {
+        al_shutdown_primitives_addon();
+        addon_primitives_activo_ = false;
+    }
+    if (addon_ttf_activo_) {
+        al_shutdown_ttf_addon();
+        addon_ttf_activo_ = false;
+    }
+    if (addon_font_activo_) {
+        al_shutdown_font_addon();
+        addon_font_activo_ = false;
+    }
 }
